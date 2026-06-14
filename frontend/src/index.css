@@ -503,3 +503,36 @@ a:hover {
     transform: rotate(360deg);
   }
 }
+
+/* Responsive Mobile Layout & Slide-out Sidebar Drawer */
+@media (max-width: 768px) {
+  .app-sidebar {
+    transform: translateX(-100%);
+    box-shadow: none;
+  }
+  
+  .app-sidebar.open {
+    transform: translateX(0);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex !important;
+  }
+
+  .mobile-close-btn {
+    display: inline-flex !important;
+  }
+
+  .grid-cols-2, .grid-cols-3 {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+    padding: 1rem !important;
+    padding-top: 1rem !important; /* Re-adjust top padding since Navbar is sticky */
+  }
+}
+
