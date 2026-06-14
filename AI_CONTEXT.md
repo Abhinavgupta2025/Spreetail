@@ -300,19 +300,21 @@ src/
 └── App.tsx
 
 ### Routing
-/                  → redirect to /dashboard or /login
+/                  → redirects to /dashboard (public landing page)
 
-/login             → AuthPage (login tab)
+/login             → AuthPage (login tab) - supports ?redirect=create-group query param to automatically pop open modal post-login
 
 /register          → AuthPage (register tab)
 
-/dashboard         → DashboardPage (all groups + overall balance)
+/dashboard         → DashboardPage (public landing page if unauthenticated, private user dashboard if authenticated)
 
-/groups/:id        → GroupPage (expenses list, members, group balances)
+/groups/:id        → GroupPage (protected; expenses list, members, group balances)
 
-/expenses/:id      → ExpenseDetailPage (splits + chat)
+/expenses/:id      → ExpenseDetailPage (protected; splits + chat)
 
-/balances          → BalancePage (individual summary across groups)
+/balances          → BalancePage (protected; individual summary across groups)
+
+/groups/:groupId/import → ImportPage (protected; CSV previews and anomaly resolution)
 
 ---
 
