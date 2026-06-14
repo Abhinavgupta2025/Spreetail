@@ -74,6 +74,13 @@
     --secondary-hover: #e0e3e8;
     --secondary-container: #3c4a44;
     
+    --danger: #ffb4ab;
+    --danger-bg: rgba(255, 180, 171, 0.1);
+    --danger-hover: #ffdad6;
+
+    --success: #46ddb8;
+    --success-bg: rgba(70, 221, 184, 0.1);
+    
     --text-main: #bbcac3;
     --text-heading: #ebf2ee;
     --text-muted: #6c7a74;
