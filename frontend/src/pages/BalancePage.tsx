@@ -362,10 +362,10 @@ export const BalancePage: React.FC = () => {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <Avatar name={line.name} size="sm" />
+                  <Avatar name={line.name || 'Unknown'} size="sm" />
                   <div>
                     <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--text-heading)' }}>
-                      You owe {line.name}
+                      You owe {line.name || 'Unknown'}
                     </span>
                     <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>
                       Group: <strong>{line.groupName}</strong>
@@ -404,10 +404,10 @@ export const BalancePage: React.FC = () => {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <Avatar name={line.name} size="sm" />
+                  <Avatar name={line.name || 'Unknown'} size="sm" />
                   <div>
                     <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--text-heading)' }}>
-                      {line.name} owes you
+                      {line.name || 'Unknown'} owes you
                     </span>
                     <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>
                       Group: <strong>{line.groupName}</strong>
