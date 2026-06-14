@@ -8,6 +8,7 @@ import DashboardPage from './pages/DashboardPage';
 import GroupPage from './pages/GroupPage';
 import ExpenseDetailPage from './pages/ExpenseDetailPage';
 import BalancePage from './pages/BalancePage';
+import ImportPage from './pages/ImportPage';
 import Spinner from './components/shared/Spinner';
 
 // Protected layout wrapper
@@ -51,6 +52,7 @@ export const App: React.FC = () => {
         <Route element={<ProtectedLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/groups/:id" element={<GroupPage />} />
+          <Route path="/groups/:groupId/import" element={<ImportPage />} />
           <Route path="/expenses/:id" element={<ExpenseDetailPage />} />
           <Route path="/balances" element={<BalancePage />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
