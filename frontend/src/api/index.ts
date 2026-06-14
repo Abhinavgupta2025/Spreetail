@@ -184,3 +184,15 @@ export const messagesApi = {
     return res.data;
   },
 };
+
+// ==================== Import API ====================
+export const importApi = {
+  getPreview: async (groupId: string, csvText: string) => {
+    const res = await api.post(`/groups/${groupId}/import-csv/preview`, { csvText });
+    return res.data;
+  },
+  commit: async (groupId: string, rows: any[]) => {
+    const res = await api.post(`/groups/${groupId}/import-csv/commit`, { rows });
+    return res.data;
+  },
+};
