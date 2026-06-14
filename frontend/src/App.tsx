@@ -11,8 +11,8 @@ import BalancePage from './pages/BalancePage';
 import ImportPage from './pages/ImportPage';
 import Spinner from './components/shared/Spinner';
 
-// Protected layout wrapper
-const ProtectedLayout: React.FC = () => {
+// Main layout wrapper that adapts based on authentication status
+const MainLayout: React.FC = () => {
   const { isAuthenticated, checkAuth, loadingAuth } = useStore();
 
   useEffect(() => {
@@ -23,39 +23,61 @@ const ProtectedLayout: React.FC = () => {
     return <Spinner fullPage />;
   }
 
+  // If authenticated, render full application with sidebar and header
+  if (isAuthenticated) {
+    return (
+      <div className="app-container">
+        <Sidebar />
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+          <Navbar />
+          <main className="main-content">
+            <Outlet />
+          </main>
+        </div>
+      </div>
+    );
+  }
+
+  // If not authenticated, render as full-width page (e.g. for landing homepage)
+  return (
+    <div className="landing-container" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <Outlet />
+      </main>
+    </div>
+  );
+};
+
+// Route barrier requiring authentication
+const RequireAuth: React.FC = () => {
+  const { isAuthenticated } = useStore();
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-
-  return (
-    <div className="app-container">
-      <Sidebar />
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-        <Navbar />
-        <main className="main-content">
-          <Outlet />
-        </main>
-      </div>
-    </div>
-  );
+  return <Outlet />;
 };
 
 export const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* Public Routes */}
+        {/* Public auth pages */}
         <Route path="/login" element={<AuthPage />} />
         <Route path="/register" element={<AuthPage />} />
 
-        {/* Protected Routes */}
-        <Route element={<ProtectedLayout />}>
+        {/* Dynamic layout wrapper */}
+        <Route element={<MainLayout />}>
+          {/* Public homepage / landing page */}
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/groups/:id" element={<GroupPage />} />
-          <Route path="/groups/:groupId/import" element={<ImportPage />} />
-          <Route path="/expenses/:id" element={<ExpenseDetailPage />} />
-          <Route path="/balances" element={<BalancePage />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+          {/* Protected routes */}
+          <Route element={<RequireAuth />}>
+            <Route path="/groups/:id" element={<GroupPage />} />
+            <Route path="/groups/:groupId/import" element={<ImportPage />} />
+            <Route path="/expenses/:id" element={<ExpenseDetailPage />} />
+            <Route path="/balances" element={<BalancePage />} />
+          </Route>
         </Route>
 
         {/* Fallback route */}
@@ -66,3 +88,4 @@ export const App: React.FC = () => {
 };
 
 export default App;
+
