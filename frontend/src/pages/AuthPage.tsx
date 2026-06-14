@@ -17,12 +17,19 @@ export const AuthPage: React.FC = () => {
   const [localError, setLocalError] = useState<string | null>(null);
   const [toastMsg, setToastMsg] = useState('');
 
+  const queryParams = new URLSearchParams(window.location.search);
+  const redirect = queryParams.get('redirect');
+
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/dashboard');
+      if (redirect === 'create-group') {
+        navigate('/dashboard?action=create-group');
+      } else {
+        navigate('/dashboard');
+      }
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, redirect]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,7 +64,12 @@ export const AuthPage: React.FC = () => {
         await register(name.trim(), email.trim(), password);
         setToastMsg('Account created successfully!');
       }
-      navigate('/dashboard');
+      
+      if (redirect === 'create-group') {
+        navigate('/dashboard?action=create-group');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       // Errors are handled by store and displayed via errorAuth
     }
