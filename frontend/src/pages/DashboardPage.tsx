@@ -8,6 +8,7 @@ import Toast from '../components/shared/Toast';
 
 export const DashboardPage: React.FC = () => {
   const {
+    isAuthenticated,
     user,
     groups,
     userBalanceSummary,
@@ -24,9 +25,232 @@ export const DashboardPage: React.FC = () => {
   const [toastMsg, setToastMsg] = useState('');
 
   useEffect(() => {
-    fetchGroups();
-    fetchUserBalanceSummary();
-  }, [fetchGroups, fetchUserBalanceSummary]);
+    if (isAuthenticated) {
+      fetchGroups();
+      fetchUserBalanceSummary();
+      
+      const queryParams = new URLSearchParams(window.location.search);
+      if (queryParams.get('action') === 'create-group') {
+        setIsModalOpen(true);
+        // Clear query parameters from URL without page reload
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
+  }, [isAuthenticated, fetchGroups, fetchUserBalanceSummary]);
+
+  // Unauthenticated landing page view
+  if (!isAuthenticated) {
+    return (
+      <div className="landing-page" style={{ width: '100%', minHeight: '100vh', backgroundColor: 'var(--bg-main)', display: 'flex', flexDirection: 'column' }}>
+        {/* Landing Navbar */}
+        <header style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '1.25rem 2rem',
+          borderBottom: '1px solid var(--border)',
+          backgroundColor: 'var(--bg-card)',
+          backdropFilter: 'blur(10px)',
+          position: 'sticky',
+          top: 0,
+          zIndex: 100
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '8px',
+              backgroundColor: 'var(--primary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 800,
+              color: 'white',
+              fontSize: '1.2rem'
+            }}>S</div>
+            <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-heading)', letterSpacing: '-0.02em' }}>
+              Spreetail Splitwise
+            </span>
+          </div>
+          <div style={{ display: 'flex', gap: '0.75rem' }}>
+            <button className="btn btn-secondary" onClick={() => navigate('/login')}>Login</button>
+            <button className="btn btn-primary" onClick={() => navigate('/register')}>Sign Up</button>
+          </div>
+        </header>
+
+        {/* Hero Section */}
+        <section style={{
+          padding: '5rem 2rem',
+          textAlign: 'center',
+          maxWidth: '900px',
+          margin: '0 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '1.5rem'
+        }}>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '0.5rem 1rem',
+            borderRadius: '99px',
+            backgroundColor: 'rgba(0, 168, 150, 0.1)',
+            border: '1px solid rgba(0, 168, 150, 0.2)',
+            color: 'var(--primary)',
+            fontSize: '0.875rem',
+            fontWeight: 600
+          }}>
+            ✨ Premium Roommate Split Ledger
+          </div>
+          <h1 style={{
+            fontSize: '3.5rem',
+            fontWeight: 800,
+            lineHeight: 1.15,
+            color: 'var(--text-heading)',
+            letterSpacing: '-0.03em',
+            margin: 0
+          }}>
+            Split Bills. Settle Debts.<br/>
+            <span style={{
+              background: 'linear-gradient(135deg, var(--primary) 0%, #00b4d8 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}>Keep the Peace.</span>
+          </h1>
+          <p style={{
+            fontSize: '1.2rem',
+            color: 'var(--text-muted)',
+            lineHeight: 1.6,
+            maxWidth: '650px',
+            margin: '0.5rem 0 1.5rem 0'
+          }}>
+            The easiest way to track and divide household bills, travel costs, and shared expenses. Get simplified net balances, real-time expense chat discussions, and Razorpay settlements.
+          </p>
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <button className="btn btn-primary btn-lg" style={{ padding: '0.875rem 2rem', fontSize: '1.05rem' }} onClick={() => navigate('/register')}>
+              Get Started for Free
+            </button>
+            <button className="btn btn-secondary btn-lg" style={{ padding: '0.875rem 2rem', fontSize: '1.05rem' }} onClick={() => navigate('/login')}>
+              Sign In
+            </button>
+          </div>
+        </section>
+
+        {/* Features Grid */}
+        <section style={{
+          padding: '4rem 2rem',
+          maxWidth: '1100px',
+          margin: '0 auto',
+          width: '100%'
+        }}>
+          <h2 style={{ fontSize: '2rem', fontWeight: 800, textAlign: 'center', marginBottom: '3rem', color: 'var(--text-heading)' }}>
+            Engineered for Stress-Free Splitting
+          </h2>
+          <div className="grid-cols-3" style={{ gap: '1.5rem' }}>
+            {/* Feature 1 */}
+            <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', textAlign: 'left', padding: '1.75rem' }}>
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '10px',
+                backgroundColor: 'rgba(0, 168, 150, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--primary)'
+              }}>
+                <Users size={20} />
+              </div>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, color: 'var(--text-heading)' }}>Dynamic Roster Splitting</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem', margin: 0, lineHeight: 1.5 }}>
+                Split unequally, by percentages, or arbitrary shares. Handle dynamic roommates moving in/out with historical balance integrity.
+              </p>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', textAlign: 'left', padding: '1.75rem' }}>
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '10px',
+                backgroundColor: 'rgba(0, 168, 150, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--primary)'
+              }}>
+                <ArrowUpRight size={20} />
+              </div>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, color: 'var(--text-heading)' }}>Smart CSV Ingestion</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem', margin: 0, lineHeight: 1.5 }}>
+                Drop a spreadsheet export and instantly identify duplicate entries, negative refunds, USD-to-INR conversions, and guest re-attributions.
+              </p>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', textAlign: 'left', padding: '1.75rem' }}>
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '10px',
+                backgroundColor: 'rgba(0, 168, 150, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--primary)'
+              }}>
+                <Landmark size={20} />
+              </div>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, color: 'var(--text-heading)' }}>Razorpay Checkout</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem', margin: 0, lineHeight: 1.5 }}>
+                Settle up directly on the dashboard. Generates instant payment orders and verifies signatures to reconcile balances to zero.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Demo Action Area */}
+        <section style={{
+          padding: '4rem 2rem 6rem 2rem',
+          maxWidth: '700px',
+          margin: '0 auto',
+          textAlign: 'center'
+        }}>
+          <div className="card" style={{
+            padding: '2.5rem',
+            border: '1px solid var(--border)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '1.25rem'
+          }}>
+            <h3 style={{ fontSize: '1.5rem', fontWeight: 700, margin: 0 }}>Ready to create a group?</h3>
+            <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.95rem' }}>
+              Create a group now to track rent, bills, and utilities. You will be prompted to login or create an account to save it.
+            </p>
+            <button className="btn btn-primary" style={{ padding: '0.75rem 1.5rem' }} onClick={() => navigate('/login?redirect=create-group')}>
+              <Plus size={16} />
+              <span>Create a Group</span>
+            </button>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer style={{
+          padding: '2rem',
+          borderTop: '1px solid var(--border)',
+          textAlign: 'center',
+          color: 'var(--text-muted)',
+          fontSize: '0.875rem',
+          marginTop: 'auto',
+          backgroundColor: 'var(--bg-card)'
+        }}>
+          © 2026 Spreetail Splitwise Clone Assignment. All rights reserved.
+        </footer>
+      </div>
+    );
+  }
 
   const handleCreateGroupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
