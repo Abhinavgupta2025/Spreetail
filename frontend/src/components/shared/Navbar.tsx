@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { useStore } from '../../store';
 import { Avatar } from './Avatar';
-import { LogOut, DollarSign } from 'lucide-react';
+import { LogOut, DollarSign, Menu } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const { user, logout, isAuthenticated } = useAuth();
+  const { toggleSidebar } = useStore();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -30,34 +32,53 @@ export const Navbar: React.FC = () => {
         zIndex: 50,
       }}
     >
-      {/* Brand logo */}
-      <Link
-        to="/dashboard"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          fontSize: '1.25rem',
-          fontWeight: 800,
-          fontFamily: 'var(--font-heading)',
-          color: 'var(--primary-container)',
-        }}
-      >
-        <div
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        {/* Mobile menu trigger */}
+        <button
+          className="mobile-menu-btn"
+          onClick={() => toggleSidebar(true)}
           style={{
-            backgroundColor: 'var(--primary-container)',
-            color: '#ffffff',
-            borderRadius: 'var(--radius-md)',
-            padding: '0.25rem',
-            display: 'flex',
+            background: 'none',
+            border: 'none',
+            color: 'var(--text-heading)',
+            cursor: 'pointer',
+            display: 'none', // Overridden in CSS media query below
             alignItems: 'center',
-            justifyContent: 'center',
+            padding: '0.25rem',
           }}
         >
-          <DollarSign size={20} strokeWidth={2.5} />
-        </div>
-        <span>Splitwise Clone</span>
-      </Link>
+          <Menu size={24} />
+        </button>
+
+        {/* Brand logo */}
+        <Link
+          to="/dashboard"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            fontSize: '1.25rem',
+            fontWeight: 800,
+            fontFamily: 'var(--font-heading)',
+            color: 'var(--primary-container)',
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: 'var(--primary-container)',
+              color: '#ffffff',
+              borderRadius: 'var(--radius-md)',
+              padding: '0.25rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <DollarSign size={20} strokeWidth={2.5} />
+          </div>
+          <span>Splitwise Clone</span>
+        </Link>
+      </div>
 
       {/* User profile actions */}
       {user && (
