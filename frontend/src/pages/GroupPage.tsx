@@ -15,6 +15,7 @@ import {
   AlertTriangle,
   Receipt,
   PiggyBank,
+  FileText,
 } from 'lucide-react';
 import Spinner from '../components/shared/Spinner';
 import Modal from '../components/shared/Modal';
@@ -357,7 +358,11 @@ export const GroupPage: React.FC = () => {
               <p style={{ color: 'var(--text-muted)', marginTop: '0.25rem' }}>{currentGroup.description}</p>
             )}
           </div>
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <button className="btn btn-secondary" onClick={() => navigate(`/groups/${currentGroup.id}/import`)}>
+              <FileText size={16} />
+              <span>Import CSV</span>
+            </button>
             <button className="btn btn-secondary" onClick={() => setIsInviteOpen(true)}>
               <Mail size={16} />
               <span>Invite</span>
@@ -505,8 +510,8 @@ export const GroupPage: React.FC = () => {
                         {expense.title}
                       </h4>
                       <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                        Paid by <strong>{expense.payerName}</strong> on {expense.date} • Created by{' '}
-                        {expense.creatorName}
+                        Paid by <strong>{expense.payerName || 'Unknown'}</strong> on {expense.date} • Created by{' '}
+                        {expense.creatorName || 'Unknown'}
                       </span>
                     </div>
                   </div>
@@ -594,9 +599,9 @@ export const GroupPage: React.FC = () => {
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <Avatar name={bal.fromUser.name} url={bal.fromUser.avatarUrl} size="sm" />
+                        <Avatar name={bal.fromUser.name || 'Unknown'} url={bal.fromUser.avatarUrl} size="sm" />
                         <span style={{ fontSize: '0.9375rem' }}>
-                          <strong>{bal.fromUser.name}</strong> owes <strong>{bal.toUser.name}</strong>
+                          <strong>{bal.fromUser.name || 'Unknown'}</strong> owes <strong>{bal.toUser.name || 'Unknown'}</strong>
                         </span>
                         <ArrowRight size={14} style={{ color: 'var(--text-muted)' }} />
                         <span
