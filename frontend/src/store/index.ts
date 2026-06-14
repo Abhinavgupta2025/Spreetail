@@ -90,6 +90,10 @@ interface StoreState {
       note?: string;
     }
   ) => Promise<void>;
+
+  // Layout Actions
+  isSidebarOpen: boolean;
+  toggleSidebar: (open?: boolean) => void;
 }
 
 
@@ -117,6 +121,11 @@ export const useStore = create<StoreState>((set, get) => ({
   groupBalances: [],
   loadingBalances: false,
   errorBalances: null,
+
+  isSidebarOpen: false,
+  toggleSidebar: (open) => set((state) => ({
+    isSidebarOpen: open !== undefined ? open : !state.isSidebarOpen
+  })),
 
   // Auth Actions implementation
   login: async (email, password) => {
