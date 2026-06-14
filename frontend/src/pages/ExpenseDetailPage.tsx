@@ -137,7 +137,7 @@ export const ExpenseDetailPage: React.FC = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}>
                 <Layers size={16} style={{ color: 'var(--text-muted)' }} />
                 <span>
-                  Paid by: <strong>{currentExpense.payerName}</strong>
+                  Paid by: <strong>{currentExpense.payerName || 'Unknown'}</strong>
                 </span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}>
@@ -185,8 +185,8 @@ export const ExpenseDetailPage: React.FC = () => {
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <Avatar name={split.name || ''} size="xs" />
-                      <span style={{ fontSize: '0.9rem' }}>{split.name}</span>
+                      <Avatar name={split.name || 'Unknown'} size="xs" />
+                      <span style={{ fontSize: '0.9rem' }}>{split.name || 'Unknown'}</span>
                       {isPayer && (
                         <span
                           style={{
@@ -289,7 +289,7 @@ export const ExpenseDetailPage: React.FC = () => {
                           color: 'var(--text-muted)',
                         }}
                       >
-                        {!isSentByUs && <span>{msg.senderName}</span>}
+                        {!isSentByUs && <span>{msg.senderName || 'Unknown'}</span>}
                       </div>
 
                       <div
