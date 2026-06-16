@@ -428,7 +428,7 @@ export async function commitImport(req: AuthRequest, res: Response, next: NextFu
           `INSERT INTO users (name, email, password_hash)
            VALUES ($1, $2, $3)
            RETURNING id`,
-          [normalized, email, '$2b$10$PLACEHOLDERHASH'] // default password placeholder
+          [normalized, email, 'PLACEHOLDER'] // default password placeholder
         );
         userId = newUserRes.rows[0].id;
       }

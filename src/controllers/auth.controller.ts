@@ -26,7 +26,7 @@ export async function register(req: AuthRequest, res: Response, next: NextFuncti
 
     if (existingUser.rows.length > 0) {
       const dbUser = existingUser.rows[0];
-      if (dbUser.password_hash !== 'PLACEHOLDER') {
+      if (dbUser.password_hash !== 'PLACEHOLDER' && dbUser.password_hash !== '$2b$10$PLACEHOLDERHASH') {
         return res.status(400).json({ error: 'Email already registered' });
       }
 
